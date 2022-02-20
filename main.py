@@ -130,9 +130,14 @@ def electdell(current_user):
 @app.route('/basket', methods=['GET'])
 @token_required # проверка токена
 def basketget(current_user):
-   data = request.get_json() # получение запроса
-   result = db.user(current_user)[0][6] # получение корзины из данных о пользователе
-   return jsonify({'message' : result})
+    data = request.get_json() # получение запроса
+    result = list()
+    l = db.user(current_user)[0][6].split()
+    for i in range(len(l)):
+        result.append(db.product_find(l[i]))
+    for i in range(len(result)):
+        print(result[i])
+    return jsonify({'message' : result})
 
 
 # добавление в корзину
